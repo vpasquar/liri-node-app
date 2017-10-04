@@ -1,9 +1,10 @@
+//aquire various keys for api calls
 var Keys = require ("./keys.js");
 
-
-if (process.argv[2] === "my-tweets") {
 //LOGIC FLOW
 //1. if process-argv[2] = my-tweets, display last 20 tweets and when they were created
+if (process.argv[2] === "my-tweets") {
+
 	var Twitter = require('twitter');
 	 
 	var client = new Twitter({
@@ -18,8 +19,8 @@ if (process.argv[2] === "my-tweets") {
 	  if (!error) {
 	  	for (i = 0; i < tweets.length; i++) {
 	  		console.log("---------------------------")
-	  		console.log("Time Tweeted " + tweets[i].created_at)
-	  		console.log("Tweet Text "   +       tweets[i].text)	
+	  		console.log("Time Tweeted: " + tweets[i].created_at)
+	  		console.log("Tweet Text:   " + tweets[i].text)	
 	  		console.log("---------------------------")  	
 	  	}
 	  }
@@ -52,20 +53,25 @@ if (process.argv[2] === "spotify-this-song") {
 	     console.log("album: " + album);
 	     console.log("spotify link: " + link);
 	  });
-}
+};
 
 //3. if = movie-this '<movie name here>' omdb the info and display to user, if no movie
 //        is entered default to Mr. Nobody
+
+if (process.argv[2] === "movie-this") {
+
+}
 //4. if = do-what-it-says run the command thats found in random.txt (using file system)
+if (process.argv[2] === "do-what-it-says") {
+	var fs = require("fs");
 
-// var fs = require("fs");
+	fs.readFile("random.txt", "utf8", function(error,data) {
 
-// fs.readFile("random.txt", "utf8", function(error,data) {
-
-// 	  if (error) {
-// 	  	return console.log(error);
-// 	  }
-// 	  else {
-
-// 	  }
-
+		  if (error) {
+		  	return console.log(error);
+		  }
+		  else {
+            console.log(data);
+		  };
+	});	  
+};

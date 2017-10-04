@@ -1,7 +1,14 @@
-console.log('this is loaded');
-console.log('')
+
+if (process.argv[2] === null) {
+	console.log('this is loaded');
+	console.log('')
+	console.log("my-tweets to print latest tweets")
+	console.log("spotify-this-song to print song information")
+	console.log("movie-this for movie information")
+	console.log("do-what-it-says for random functionality")
+};
 // Declare the object to be exported to Liri App
-var exports = module.exports = {}
+var exports = module.exports = {};
 
 exports.twitterKeys = {
   consumer_key: 'sf9459gzP43aw4KLdh3mIsDPc',
