@@ -1,12 +1,14 @@
 //aquire various keys for api calls
 var Keys = require ("./keys.js");
+var Twitter = require('twitter');
+var Spotify = require('node-spotify-api');
+var request = require("request");	 
 
 //LOGIC FLOW
 //1. if process-argv[2] = my-tweets, display last 20 tweets and when they were created
 if (process.argv[2] === "my-tweets") {
 
-	var Twitter = require('twitter');
-	 
+	
 	var client = new Twitter({
 	  consumer_key: Keys.twitterKeys.consumer_key,
 	  consumer_secret: Keys.twitterKeys.consumer_secret,
@@ -31,7 +33,7 @@ if (process.argv[2] === "my-tweets") {
 //       && if no song is provided default to "The sign" by Ace of Base
 if (process.argv[2] === "spotify-this-song") {
 	  var userQuery = process.argv[3];
-	  var Spotify = require('node-spotify-api');
+	  
 	  var spotify = new Spotify({
 	     id: Keys.spotifyKeys.clientId,
 	     secret: Keys.spotifyKeys.clientSecret
@@ -58,11 +60,46 @@ if (process.argv[2] === "spotify-this-song") {
 //3. if = movie-this '<movie name here>' omdb the info and display to user, if no movie
 //        is entered default to Mr. Nobody
 
-if (process.argv[2] === "movie-this") {
 
-}
+if (process.argv[2] === "movie-this") {
+	var movieName = ''
+	if (process.argv[3] === '') {
+       movieName = "Mr. Nobody"
+	}
+	else {
+       movieName = process.argv.slice(3).join(" ");
+       console.log(movieName);
+    };
+
+	request("http://www.omdbapi.com/?t=" + movieName +"&y=&plot=short&apikey=40e9cece", 
+		function(error, response, body) {
+        
+           if (!error && response.statusCode === 200) {
+           	  console.log(JSON.parse(body));
+           	  var title         = JSON.parse(body).Title;
+           	  var year          = JSON.parse(body).Year;
+              var imdbRating    = JSON.parse(body).Ratings[0].Value;
+           	  var rottenRating  = JSON.parse(body).Ratings[1].Value;
+           	  var country       = JSON.parse(body).Country;
+           	  var language      = JSON.parse(body).Language;
+           	  var plot          = JSON.parse(body).Plot;
+           	  var actors        = JSON.parse(body).Actors;
+
+           	  console.log("\n" + "--------------");
+           	  console.log(title);
+           	  console.log(imdbRating);
+           	  console.log(rottenRating);
+           	  console.log(country);
+           	  console.log(language);
+           	  console.log(plot);
+           	  console.log(actors);
+           }
+		});
+
+};
 //4. if = do-what-it-says run the command thats found in random.txt (using file system)
 if (process.argv[2] === "do-what-it-says") {
+	
 	var fs = require("fs");
 
 	fs.readFile("random.txt", "utf8", function(error,data) {
